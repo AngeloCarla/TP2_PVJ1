@@ -409,7 +409,7 @@ GameObject:
   - component: {fileID: 534082896}
   - component: {fileID: 534082895}
   - component: {fileID: 534082894}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -668,6 +668,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   speed: 50
+  jumpForce: 10
+  isGrounded: 1
+  rayDistance: 0.8
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!54 &1946149547
 Rigidbody:
   m_ObjectHideFlags: 0
