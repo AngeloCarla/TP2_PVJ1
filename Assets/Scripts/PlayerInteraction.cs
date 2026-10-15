@@ -7,7 +7,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private Transform hand; // Desde donde apunta el raycast (La mano)
     [SerializeField] private float rayDistance; // Largo del rayo
     [SerializeField] private LayerMask layer; // Capa que detecta
-    [SerializeField] private Vector3 offset;
+    [SerializeField] private Vector3 offset; 
     private Vector3 origin; // Punto de inicio
     private Vector3 dir; // Direccion a donde mira
     private RaycastHit hit; // Guarda informacion del impacto
@@ -16,6 +16,9 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Update()
     {
+        if (hand == null)
+            return;
+
         if (Input.GetKeyDown(KeyCode.E)) // Al presionar E
         {
             isInteractable = false;
@@ -26,8 +29,16 @@ public class PlayerInteraction : MonoBehaviour
             // Lanza el rayo
             if (Physics.Raycast(origin, dir, out hit, rayDistance, layer))
             {
-                isInteractable = hit.collider.CompareTag("Interactable"); // Comprueba si el objeto alcanzado tiene el tag Detectable
-                Debug.Log("Detectado");
+                InformationData data = hit.collider.GetComponent<InformationData>();
+
+                if (data != null) data.Collect(); // Recolecta
+                
+                /*isInteractable = hit.collider.CompareTag("Interactable"); // Comprueba si el objeto alcanzado tiene el tag Detectable
+
+                if (isInteractable)
+                {
+                    Debug.Log("Objeto interactuable detectado");
+                }*/
             }
         }
     }
