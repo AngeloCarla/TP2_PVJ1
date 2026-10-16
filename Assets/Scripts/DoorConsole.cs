@@ -20,9 +20,9 @@ public class DoorConsole : MonoBehaviour
         }
         else
         {
-            Debug.Log("<color=#FF1B1B>Acceso denegado.</color>");
+            Debug.Log("<color=#FF3434>Acceso denegado</color>");
 
-            Debug.Log($"<color=red>Falta: </color><color=white>{gameManager.GetCollectedData()} / {gameManager.GetRequiredData()}</color>");
+            Debug.Log($"<color=#FF3434>Falta: </color><color=white>{gameManager.GetCollectedData()} / {gameManager.GetRequiredData()}</color>");
         }
     }
 }

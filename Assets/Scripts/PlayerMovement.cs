@@ -60,4 +60,9 @@ public class PlayerMovement : MonoBehaviour
         Color ColorRay = isGrounded ? Color.green : Color.red;
         Debug.DrawRay(origin, Vector3.down * rayDistance, ColorRay);
     }
+
+    public void RotateCharacter(float rotateY)
+    {
+        transform.rotation = Quaternion.Euler(0f, rotateY, 0f);
+    }
 }
