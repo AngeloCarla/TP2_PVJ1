@@ -3,12 +3,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [Header("Vida y puntos")]
-    [SerializeField] private int playerHealth;
-    [SerializeField] private int score;
+    [SerializeField] private int playerHealth; // Vida del jugador
+    [SerializeField] private int score; // Puntos
 
     [Header("Mision")]
-    [SerializeField] private int collectedData;
-    [SerializeField] private int requiredData = 5;
+    [SerializeField] private int collectedData; // Objetos recolectados
+    [SerializeField] private int requiredData = 5; // Total de objetos recolectados
 
     void Update()
     {
@@ -38,5 +38,15 @@ public class GameManager : MonoBehaviour
     public bool HasRequiredData()
     {
         return collectedData >= requiredData; // Datos necesarios
+    }
+
+    public int GetCollectedData()
+    {
+        return collectedData;
+    }
+
+    public int GetRequiredData()
+    {
+        return requiredData;
     }
 }

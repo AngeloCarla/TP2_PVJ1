@@ -1,4 +1,3 @@
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
@@ -30,15 +29,18 @@ public class PlayerInteraction : MonoBehaviour
             if (Physics.Raycast(origin, dir, out hit, rayDistance, layer))
             {
                 InformationData data = hit.collider.GetComponent<InformationData>();
-
-                if (data != null) data.Collect(); // Recolecta
-                
-                /*isInteractable = hit.collider.CompareTag("Interactable"); // Comprueba si el objeto alcanzado tiene el tag Detectable
-
-                if (isInteractable)
+                if (data != null)
                 {
-                    Debug.Log("Objeto interactuable detectado");
-                }*/
+                    data.Collect(); // Recolecta
+                    return;
+                }
+
+                DoorConsole console = hit.collider.GetComponent<DoorConsole>();
+                if (console != null)
+                {
+                    console.DoorActivate();// Activa la puerta
+                    return;
+                }
             }
         }
     }

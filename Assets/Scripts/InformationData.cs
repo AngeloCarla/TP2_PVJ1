@@ -12,7 +12,6 @@ public class InformationData : MonoBehaviour
         if (gameManager.HasRequiredData()) return; // Todos los datos requeridos esta recogidos
 
         gameManager.CollectData(points); // Se recolecta y suma puntos 
-
         Destroy(gameObject); // Eliminamos el fragmento del escenario
     }
 }
