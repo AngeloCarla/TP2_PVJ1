@@ -5,7 +5,9 @@ public class HealthSystem : MonoBehaviour
     [Header("Vida")]
     [SerializeField] private float maxHealth = 100f; // Maximo de vida
     private float currentHealth; // Vida
+    public float CurrentHealth => currentHealth;
     private bool isDead; // Estado de muerte
+    public bool IsDead => isDead;
 
     void Awake()
     {
@@ -29,8 +31,4 @@ public class HealthSystem : MonoBehaviour
         isDead = true;
         Debug.Log($"<color=red>Moriste por pendejo</color>");
     }
-
-    public float CurrentHealth => currentHealth;
-    public bool IsDead => isDead;
-
 }
