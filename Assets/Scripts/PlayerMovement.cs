@@ -16,6 +16,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float rayDistance; // Cuanto mide el rayo
     [SerializeField] private LayerMask groundLayer; // Capa que detecta
 
+    private float mudMultiplier = 0.4f;
+    private bool inMud;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -41,10 +44,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (rb != null)
         {
-            Vector3 movement = dir.normalized * speed * Time.fixedDeltaTime;
+            float currentSpeed = inMud ? speed * mudMultiplier : speed;
+            Vector3 movement = dir.normalized * currentSpeed * Time.fixedDeltaTime;
 
             rb.MovePosition(rb.position + transform.TransformDirection(movement));
-            //transform.Translate(movement); // Movimiento
         }
     }
 
@@ -64,5 +67,10 @@ public class PlayerMovement : MonoBehaviour
     public void RotateCharacter(float rotateY)
     {
         transform.rotation = Quaternion.Euler(0f, rotateY, 0f);
+    }
+
+    public void SetInMud(bool value)
+    {
+        inMud = value;
     }
 }
