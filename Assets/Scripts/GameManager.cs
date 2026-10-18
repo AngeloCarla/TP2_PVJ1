@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
         if (health != null)
         {
             Debug.Log(
-                $"<color=#FF3434> Vida: <color=white>{health.CurrentHealth} </color></color>" +
+                $"<color=#FF3434> Vida: <color=white>{health.CurrentHealth}% </color></color>" +
                 $"<color=cyan> Datos: <color=white>{collectedData} / {requiredData} </color></color>" +
                 $"<color=yellow> Puntos: <color=white>{score}</color></color>\n" +
                 $"<color=purple>----- ESTADO DE LA MISION -----</color>"
