@@ -2,7 +2,7 @@
 - Project name: TP02-PVJ2026
 - Unity version: Unity 6000.3.21f1
 - Active game object:
-  - Name: GameManager
+  - Name: Terrain
   - Tag: Untagged
-  - Layer: Default
+  - Layer: groundLayer
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

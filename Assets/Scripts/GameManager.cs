@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEngine.Rendering;
-public enum GameState { Start, Playing, Paused, Victory, Defeat }
 
 public class GameManager : MonoBehaviour
 {
+    public enum GameState { Start, Playing, Paused, Victory, Defeat }
+
     [Header("Estados del juego")]
     [SerializeField] private GameState currentState = GameState.Start;
     public GameState CurrentState => currentState;
@@ -33,7 +34,7 @@ public class GameManager : MonoBehaviour
     {
         health = FindAnyObjectByType<HealthSystem>();
 
-        Time.timeScale = 1f;
+        //Time.timeScale = 1f;
         //Debug.Log($"<color=purple>El cubo rojo parte 2</color>");
     }
 
@@ -46,7 +47,6 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Playing:
                 if (Input.GetKeyDown(KeyCode.Escape)) ChangeState(GameState.Paused);
-                if (Input.GetKeyDown(KeyCode.P)) Debug.Log($"<color=#FFD700>Puntos: {score}</color>");
                 break;
             case GameState.Paused:
                 if (Input.GetKeyDown(KeyCode.Escape)) ChangeState(GameState.Playing);
@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
                 // Gano
                 break;
             case GameState.Defeat:
-                // Pedio
+                health.Dead();
                 break;
         }
     }
@@ -68,21 +68,24 @@ public class GameManager : MonoBehaviour
         if (currentState == GameState.Start || currentState == GameState.Paused || currentState == GameState.Victory || currentState == GameState.Defeat)
         {
             Time.timeScale = 0f;
+            ShowStatus();
         }
         else
         {
             Time.timeScale = 1f;
         }
+    }
 
-        if (currentState == GameState.Paused)
+    public void ShowStatus()
+    {
+        if (health != null)
         {
-            if (health != null)
-                Debug.Log("<color=purple>¡Juego pausado!</color>");
-                Debug.Log("" +
-                    $"<color=#00FF5C>| Vida: {health.CurrentHealth} |</color>" + "" +
-                    $"<color=#007566>| Datos: {collectedData} / {requiredData} |</color>" + "" +
-                    $"<color=#FFE86F>| Puntos: {score} |</color>" +
-                    "");
+            Debug.Log(
+                $"<color=#FF3434> Vida: <color=white>{health.CurrentHealth} </color></color>" +
+                $"<color=cyan> Datos: <color=white>{collectedData} / {requiredData} </color></color>" +
+                $"<color=yellow> Puntos: <color=white>{score}</color></color>\n" +
+                $"<color=purple>----- ESTADO DE LA MISION -----</color>"
+                );
         }
     }
 
@@ -98,7 +101,7 @@ public class GameManager : MonoBehaviour
         score += points; // Suma puntos
 
         // Debug
-        Debug.Log($"<color=#FFD700>Datos: </color><color=white>{collectedData} / {requiredData}</color>");
+        Debug.Log($"<color=cyan>Datos: </color><color=white>{collectedData} / {requiredData}</color>");
 
         Debug.Log($"<color=#FFD700>Puntos: </color><color=white>{score}</color>");
     }

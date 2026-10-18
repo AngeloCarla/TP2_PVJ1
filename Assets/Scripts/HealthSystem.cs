@@ -6,6 +6,7 @@ public class HealthSystem : MonoBehaviour
     [SerializeField] private float maxHealth = 100f; // Maximo de vida
     private float currentHealth; // Vida
     public float CurrentHealth => currentHealth;
+    private float damage;
     private bool isDead; // Estado de muerte
     public bool IsDead => isDead;
 
@@ -17,16 +18,17 @@ public class HealthSystem : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
+        damage = amount;
         if (isDead || amount <= 0f) return;
         currentHealth -= amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        Debug.Log($"<color=cyan>Vida: {currentHealth}</color>");
+        Debug.Log($"<color=#FF3434>-{damage} de vida</color>");
 
         if (currentHealth <= 0f) Dead();
     }
 
-    private void Dead()
+    public void Dead()
     {
         isDead = true;
         Debug.Log($"<color=red>Moriste por pendejo</color>");

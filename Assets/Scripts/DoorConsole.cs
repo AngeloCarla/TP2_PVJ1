@@ -16,13 +16,11 @@ public class DoorConsole : MonoBehaviour
             doorActivated = true; // Activa la puerta
             door.SetActive(false); // Desaparece la puerta
 
-            Debug.Log("<color=#00FF66>¡Acceso autorizado!</color>");
+            Debug.Log("<color=#00FF66>¡Acceso AUTORIZADO!</color>");
         }
         else
         {
-            Debug.Log("<color=#FF3434>Acceso denegado</color>");
-
-            Debug.Log($"<color=#FF3434>Falta: </color><color=white>{gameManager.GetCollectedData()} / {gameManager.GetRequiredData()}</color>");
+            Debug.Log("<color=#FF3434>¡Acceso DENEGADO!</color>\n" + $"<color=#FF3434>Falta: </color><color=white>{gameManager.GetCollectedData()} / {gameManager.GetRequiredData()}</color>");
         }
     }
 }
