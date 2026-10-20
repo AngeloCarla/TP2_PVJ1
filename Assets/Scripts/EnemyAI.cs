@@ -8,33 +8,41 @@ public class EnemyAI : MonoBehaviour
 
     [Header("Estados / Test")]
     [SerializeField] private AIState currentState = AIState.Patrol; // Inicia en Patrullaje
+    public AIState CurrentState => currentState;
 
     [Header("Radio de deteccion")]
     [SerializeField] private float detectionRadius; // Distancia a la que detecta
+    public float DetectionRadius => detectionRadius;
     [SerializeField] private float attackRadius; // Distancia a la que comienza le ataque
 
     [Header("Patrullaje")]
     [SerializeField] private Transform[] patrolPoints; // Lista de puntos de patrullaje
     [SerializeField] private float waitTimeAtPoint = 2f; // Tiempo de espera
+    private NavMeshAgent agent; // Agentes
     private int currentPatrolIndex; // Punto actual
     private bool isWaitingAtPoint; // Esta esperando
 
     [Header("Ataque")]
     [SerializeField] private float attackCooldown = 1.5f; // Tiempo de espera de ataque
-    [SerializeField] private float damage;
-    private bool isAttacking = false;
-
-    private NavMeshAgent agent; // Agentes
+    [SerializeField] private float damage; // Daño
     private Transform playerTransform; // Jugador
     private HealthSystem healthSystemPlayer; // Vida
-    // private Attack attack;
+    private bool isAttacking = false; // Esta atacando
+
+    [Header("Aturdimiento")]
+    [SerializeField] private Color stunnedColor = Color.black; // Color aturdido
+    private Renderer enemyRenderer;
+    private Color originalColor;
     private bool isStunned; // Aturdido
+    public bool IsStunned => isStunned;
+    private bool hasAwardedStunPoints; // Ya se dio puntos
+    public bool HasAwardedStunPoints => hasAwardedStunPoints;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        // attack = GetComponent<Attack>();
-
+        enemyRenderer = GetComponent<Renderer>();
+        originalColor = enemyRenderer.material.color;
     }
 
     private void Start()
@@ -158,7 +166,7 @@ public class EnemyAI : MonoBehaviour
 
         if (patrolPoints.Length > 0)
         {
-            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;//2%3
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length; //2%3
             GoToNextPatrolPoint();
         }
 
@@ -183,21 +191,35 @@ public class EnemyAI : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackRadius);
     }
 
-    public void Stun(float duration)
+    public void Stun(float duration) // Aturdimiento
     {
         StartCoroutine(StunRoutine(duration));
     }
 
     private IEnumerator StunRoutine(float duration)
     {
+        // Aturdidto
         isStunned = true;
         agent.isStopped = true;
-        Debug.Log($"[ENEMIGO] Aturdido por {duration} segundos.");
+        ChangeEnemyColor(true);
+        Debug.Log($"<color=#FF0082>Aturdido por {duration} segundos</color>");
 
         yield return new WaitForSeconds(duration);
 
+        // Se recupera
         isStunned = false;
         agent.isStopped = false;
-        Debug.Log(" [ENEMIGO] Recuperado del aturdimiento.");
+        ChangeEnemyColor(false);
+        Debug.Log("<color=#FF0082>Recuperado del aturdimiento</color>");
     }
+
+    private void ChangeEnemyColor(bool stunned)
+    {
+        enemyRenderer.material.color = stunned ? stunnedColor : originalColor;
+    }
+    public void MarkStunPointsAwarded()
+    {
+        hasAwardedStunPoints = true;
+    }
+
 }

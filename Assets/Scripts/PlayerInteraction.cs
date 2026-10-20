@@ -12,11 +12,23 @@ public class PlayerInteraction : MonoBehaviour
     private RaycastHit hit; // Guarda informacion del impacto
     private bool isInteractable; // Interactuable
 
+    [Header("Resaltado")]
+    [SerializeField] private Color highlightColor = new Color(0.6f, 0.2f, 1f, 0.4f);
+    private Renderer highlightedRenderer;
+    private Color originalColor;
+
 
     private void Update()
     {
         if (hand == null)
             return;
+
+        // Actualiza el origen y la direccion del Raycast
+        origin = hand.TransformPoint(offset);
+        dir = hand.forward;
+
+        // Resalta el objeto al que estamos apuntando
+        UpdateHighlight();
 
         if (Input.GetKeyDown(KeyCode.E)) // Al presionar E
         {
@@ -41,7 +53,43 @@ public class PlayerInteraction : MonoBehaviour
                     console.DoorActivate();// Activa la puerta
                     return;
                 }
+
+                EnemyAI enemy = hit.collider.GetComponentInParent<EnemyAI>();
+
+                if (enemy != null)
+                {
+                    StunGun stunGun = GetComponent<StunGun>();
+
+                    if (stunGun != null) stunGun.TryStun(enemy); // Aturde al enemigo
+                    return;
+                }
             }
+        }
+    }
+
+    private void UpdateHighlight()
+    {
+        if (Physics.Raycast(origin, dir, out RaycastHit targetHit, rayDistance, layer)) // Comprueba el Raycast
+        {
+            Renderer targetRenderer = targetHit.collider.GetComponent<Renderer>();
+
+            if (targetRenderer != highlightedRenderer)
+            {
+                if (highlightedRenderer != null) highlightedRenderer.material.color = originalColor; // Si no apunta vuelve al color original
+
+                highlightedRenderer = targetRenderer;
+
+                if (highlightedRenderer != null)
+                {
+                    originalColor = highlightedRenderer.material.color; // Guarda el color original
+                    highlightedRenderer.material.color = highlightColor; // Resaltado
+                }
+            }
+        }
+        else
+        {
+            if (highlightedRenderer != null) highlightedRenderer.material.color = originalColor; // Color original
+            highlightedRenderer = null;
         }
     }
 

@@ -105,4 +105,10 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"<color=#FFD700>Puntos: </color><color=white>{score}</color>");
     }
+
+    public void AddScore(int points)
+    {
+        score += points;
+        Debug.Log($"<color=#FFD700>Puntos: </color><color=white>{score}</color>");
+    }
 }
