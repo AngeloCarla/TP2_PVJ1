@@ -34866,6 +34866,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DoorConsole
   gameManager: {fileID: 977876086}
   door: {fileID: 1124048497}
+  time: 10
 --- !u!65 &1236851253
 BoxCollider:
   m_ObjectHideFlags: 0
