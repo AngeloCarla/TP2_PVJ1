@@ -1,26 +1,31 @@
 using UnityEngine;
+using System.Collections;
 
 public class DoorConsole : MonoBehaviour
 {
+    [Header("Sistema de la puerta")]
     [SerializeField] private GameManager gameManager; // GameManager
-    [SerializeField] private GameObject door; // Puerta
-    private bool doorActivated = false;
+    [SerializeField] private GameObject door; // puerta
+    [SerializeField] private float time = 10f; // Tiempo
+    private bool doorOpened; // Puerta abierta
 
-    public void DoorActivate() 
+    public void DoorActive() 
     {
-        if (doorActivated) return; // Evita que se active sin cumplir la mision
         if (gameManager == null || door == null) return;
+        if (doorOpened) return;
 
         if (gameManager.HasRequiredData()) // Si tiene los objetos requeridos
         {
-            doorActivated = true; // Activa la puerta
-            door.SetActive(false); // Desaparece la puerta
+            StartCoroutine(OpenedDoor());
+        }
+    }
 
-            Debug.Log("<color=#00FF66>¡Acceso AUTORIZADO!</color>");
-        }
-        else
-        {
-            Debug.Log("<color=#FF3434>¡Acceso DENEGADO!</color>\n" + $"<color=#FF3434>Falta: </color><color=white>{gameManager.GetCollectedData()} / {gameManager.GetRequiredData()}</color>");
-        }
+    private IEnumerator OpenedDoor()
+    {
+        Debug.Log($"<color=#7844FF>La puerta de de la BASE SECRETA se ha abierto (se cierra en {time})</color>");
+        door.SetActive(false);
+        yield return new WaitForSeconds(time);
+        Debug.Log("<color=#7844FF>La puerta de de la BASE SECRETA se ha cerrado</color>");
+        door.SetActive(true);
     }
 }

@@ -47,13 +47,6 @@ public class PlayerInteraction : MonoBehaviour
                     return;
                 }
 
-                DoorConsole console = hit.collider.GetComponent<DoorConsole>();
-                if (console != null)
-                {
-                    console.DoorActivate();// Activa la puerta
-                    return;
-                }
-
                 EnemyAI enemy = hit.collider.GetComponentInParent<EnemyAI>();
 
                 if (enemy != null)

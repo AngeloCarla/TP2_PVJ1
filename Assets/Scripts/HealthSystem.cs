@@ -15,6 +15,7 @@ public class HealthSystem : MonoBehaviour
     private float blinkDuration = 0.5f; // Duracion del parpadeo
 
     private Renderer rend;
+    private GameManager manager;
     private bool isFlashing;
 
     void Awake()
@@ -22,7 +23,7 @@ public class HealthSystem : MonoBehaviour
         currentHealth = maxHealth;
         isDead = false;
         rend = GetComponent<Renderer>();
-
+        manager = FindFirstObjectByType<GameManager>();
     }
 
     public void TakeDamage(float amount)
@@ -74,7 +75,10 @@ public class HealthSystem : MonoBehaviour
 
     public void Dead()
     {
+        if (isDead) return;
+        Debug.Log("<color=red>¡Moriste!</color>");
+
+        if (manager != null) manager.Lose(); // Pierde
         isDead = true;
-        Debug.Log($"<color=red>Moriste</color>");
     }
 }

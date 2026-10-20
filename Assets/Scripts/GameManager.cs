@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,7 +14,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Mision")]
     [SerializeField] private int collectedData; // Objetos recolectados
-    [SerializeField] private int requiredData = 5; // Total de objetos recolectados
+    [SerializeField] private int requiredData; // Total de objetos recolectados
+    private bool openedDoor;
 
     public int GetCollectedData()
     {
@@ -29,17 +29,30 @@ public class GameManager : MonoBehaviour
     {
         return collectedData >= requiredData; // Datos necesarios
     }
+    private void Awake()
+    {
+        Time.timeScale = 0f;
+    }
 
     void Start()
     {
         health = FindAnyObjectByType<HealthSystem>();
-
-        //Time.timeScale = 1f;
-        //Debug.Log($"<color=purple>El cubo rojo parte 2</color>");
+        Debug.Log($"<color=white>Presiona <color=purple>ENTER <color=white>para empezar</color></color></color>");
+        Debug.Log(
+            $"<color=purple>WASD/Flechas <color=white>para caminar, </color></color>" +
+            $"<color=purple>ESPACIO <color=white>para saltar y </color></color>" +
+            $"<color=purple>E <color=white>para interactuar</color></color>");
+        ShowStatus();
     }
 
     void Update()
     {
+        if (collectedData >= requiredData && !openedDoor)
+        {
+            OpenDoor();
+            openedDoor = true;
+        }
+
         switch (currentState)
         {
             case GameState.Start:
@@ -50,12 +63,6 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Paused:
                 if (Input.GetKeyDown(KeyCode.Escape)) ChangeState(GameState.Playing);
-                break;
-            case GameState.Victory:
-                // Gano
-                break;
-            case GameState.Defeat:
-                health.Dead();
                 break;
         }
     }
@@ -82,7 +89,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log(
                 $"<color=#FF3434> Vida: <color=white>{health.CurrentHealth}% </color></color>" +
-                $"<color=cyan> Datos: <color=white>{collectedData} / {requiredData} </color></color>" +
+                $"<color=cyan> Fragmentos: <color=white>{collectedData} / {requiredData} </color></color>" +
                 $"<color=yellow> Puntos: <color=white>{score}</color></color>\n" +
                 $"<color=purple>----- ESTADO DE LA MISION -----</color>"
                 );
@@ -93,7 +100,6 @@ public class GameManager : MonoBehaviour
     {
         if (collectedData >= requiredData) // Si llega a los datos requeridos
         {
-            Debug.Log("Ya recogiste todos los datos");
             return;
         }
 
@@ -104,6 +110,24 @@ public class GameManager : MonoBehaviour
         Debug.Log($"<color=cyan>Datos: </color><color=white>{collectedData} / {requiredData}</color>");
 
         Debug.Log($"<color=#FFD700>Puntos: </color><color=white>{score}</color>");
+    }
+
+    public void OpenDoor()
+    {
+        DoorConsole door = FindFirstObjectByType<DoorConsole>();
+        if (door == null) return;
+        door.DoorActive();
+    }
+    public void Win()
+    {
+        ChangeState(GameState.Victory);
+        Debug.Log("<color=#00FF66>¡MISIÓN COMPLETADA! ¡VICTORIA!</color>");
+    }
+
+    public void Lose()
+    {
+        ChangeState(GameState.Defeat);
+        Debug.Log("<color=red>¡MISIÓN FALLIDA! DERROTA.</color>");
     }
 
     public void AddScore(int points)
