@@ -15,13 +15,13 @@ Lenguaje: C#
 ___
 
 ## 🎮 Descripcion del Proyecto
-Metal Gear Solid: Ghost Infiltration es un videojuego de infiltración y supervivencia inspirado en el género de sigilo
+Metal Gear Solid: Ghost Infiltration es un videojuego de infiltracion y supervivencia inspirado en el genero de sigilo
 
-El jugador debe infiltrarse en una base secreta, explorar el escenario, recolectar fragmentos de información y evitar ser detectado por los guardias que patrullan la zona
+El jugador debe infiltrarse en una base secreta, explorar el escenario, recolectar fragmentos de informacion y evitar ser detectado por los guardias que patrullan la zona
 
-Para completar la misión, deberá utilizar las herramientas disponibles, administrar su salud, aprovechar las oportunidades para aturdir o eliminar enemigos y conseguir acceso a la computadora principal de la base
+Para completar la mision, debera utilizar las herramientas disponibles, administrar su salud, aprovechar las oportunidades para aturdir o eliminar enemigos y conseguir acceso a la computadora principal de la base
 
-El objetivo final es reunir la información requerida y hackear la terminal principal sin perder toda la salud
+El objetivo final es reunir la informacion requerida y hackear la terminal principal sin perder toda la salud
 ___
 ## 🕹️ Controles del Jugador
 | Accion | Tecla/Boton | Descripcion|
@@ -31,7 +31,7 @@ ___
 | **Interactuar** | `E` / Contacto con zona (`Trigger`) | Dispara el aturdidor para el enemigo, interactua con objetos y recolecta |
 | **Disparar** | `Q` | Dispara balas para eliminar enemigos |
 | **Pausar** | `ESC` | Permite pausar o reanudar la partida |
-| **Iniciar Partida** | `ENTER` | nicia el juego desde el estado inicial |
+| **Iniciar Partida** | `ENTER` | inicia el juego desde el estado inicial |
 ___
 ## ⚙️ Mecanicas
 - **Infiltracion y exploracion**
