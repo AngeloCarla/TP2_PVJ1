@@ -81,7 +81,7 @@ El jugador dispone de una cantidad limitada de salud. Los ataques de los guardia
 En mi caso, yo utilize 4 de los requisitos opcionales:
   - Opcion A (Arma por Raycast): Un arma de aturdimiento que proyecte un Raycast frontal para congelar o paralizar al enemigo por unos segundos
   - Opcion C (Trampa de Rayo Laser): Trampas de pared que emitan un rayo continuo que descuente vida si el jugador cruza la linea de deteccion
-  - Opción D (Zona de Desaceleracion): Areas delimitadas que reduzcan la velocidad del jugador al entrar a la zona y la restablezcan en cuando salgan
+  - Opcion D (Zona de Desaceleracion): Areas delimitadas que reduzcan la velocidad del jugador al entrar a la zona y la restablezcan en cuando salgan
   - Opcion F (Zona de Gas Toxico): Area de peligro donde se descuente vida al jugador paulatinamente mientras permanezca dentro de la zona
 
 - **Estados del Juego**
@@ -409,7 +409,6 @@ Funcionamiento: El Script maneja los estados del juego
 
 6. ### Requisitos Opcionales 
 Script principal: ```StunGun.cs```, ```LaserTrap.cs```, ```MudZone.cs``` y ```ToxicGas.cs```
-Funcionamiento: 
 
 ### StunGun.cs
 ```csharp
