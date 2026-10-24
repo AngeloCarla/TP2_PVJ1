@@ -4,28 +4,29 @@ using System.Collections;
 public class DoorConsole : MonoBehaviour
 {
     [Header("Sistema de la puerta")]
-    [SerializeField] private GameManager gameManager; // GameManager
     [SerializeField] private GameObject door; // puerta
-    [SerializeField] private float time = 10f; // Tiempo
-    private bool doorOpened; // Puerta abierta
+    [SerializeField] private float time; // Tiempo
+    [SerializeField] private bool mision;
+    private bool doorOpened;
 
-    public void DoorActive() 
+    public void DoorActive()
     {
-        if (gameManager == null || door == null) return;
         if (doorOpened) return;
-
-        if (gameManager.HasRequiredData()) // Si tiene los objetos requeridos
+        if (mision)
         {
-            StartCoroutine(OpenedDoor());
+            if (GameManager.Instance == null || !GameManager.Instance.HasRequiredData()) return;
         }
+
+        StartCoroutine(OpenedDoor());
     }
 
     private IEnumerator OpenedDoor()
     {
-        Debug.Log($"<color=#7844FF>La puerta de de la BASE SECRETA se ha abierto (se cierra en {time})</color>");
+        doorOpened = true;
+        if (mision) Debug.Log($"<color=#7844FF>La puerta de de la BASE SECRETA se ha abierto (se cierra en {time}s)</color>");
         door.SetActive(false);
         yield return new WaitForSeconds(time);
-        Debug.Log("<color=#7844FF>La puerta de de la BASE SECRETA se ha cerrado</color>");
+        if (mision) Debug.Log("<color=#7844FF>La puerta de de la BASE SECRETA se ha cerrado</color>");
         door.SetActive(true);
     }
 }

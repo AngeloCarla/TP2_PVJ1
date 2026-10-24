@@ -30,9 +30,7 @@ public class EnemyAI : MonoBehaviour
     private bool isAttacking = false; // Esta atacando
 
     [Header("Aturdimiento")]
-    [SerializeField] private Color stunnedColor = Color.black; // Color aturdido
-    private Renderer enemyRenderer;
-    private Color originalColor;
+    [SerializeField] private GameObject vfx;
     private bool isStunned; // Aturdido
     public bool IsStunned => isStunned;
     private bool hasAwardedStunPoints; // Ya se dio puntos
@@ -41,8 +39,6 @@ public class EnemyAI : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        enemyRenderer = GetComponent<Renderer>();
-        originalColor = enemyRenderer.material.color;
     }
 
     private void Start()
@@ -201,21 +197,14 @@ public class EnemyAI : MonoBehaviour
         // Aturdidto
         isStunned = true;
         agent.isStopped = true;
-        ChangeEnemyColor(true);
-        Debug.Log($"<color=#FF0082>Aturdido por {duration} segundos</color>");
+        vfx.SetActive(true);
 
         yield return new WaitForSeconds(duration);
 
         // Se recupera
         isStunned = false;
         agent.isStopped = false;
-        ChangeEnemyColor(false);
-        Debug.Log("<color=#FF0082>Recuperado del aturdimiento</color>");
-    }
-
-    private void ChangeEnemyColor(bool stunned)
-    {
-        enemyRenderer.material.color = stunned ? stunnedColor : originalColor;
+        vfx.SetActive(false);
     }
     public void MarkStunPointsAwarded()
     {

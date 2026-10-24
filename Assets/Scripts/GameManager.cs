@@ -1,8 +1,9 @@
 using UnityEngine;
+public enum GameState { Start, Playing, Paused, Victory, Defeat }
 
 public class GameManager : MonoBehaviour
 {
-    public enum GameState { Start, Playing, Paused, Victory, Defeat }
+    public static GameManager Instance { get; private set; }
 
     [Header("Estados del juego")]
     [SerializeField] private GameState currentState = GameState.Start;
@@ -31,6 +32,17 @@ public class GameManager : MonoBehaviour
     }
     private void Awake()
     {
+        // Guardamos una referencia al GameManager
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Time.timeScale = 0f;
     }
 
@@ -40,8 +52,9 @@ public class GameManager : MonoBehaviour
         Debug.Log($"<color=white>Presiona <color=purple>ENTER <color=white>para empezar</color></color></color>");
         Debug.Log(
             $"<color=purple>WASD/Flechas <color=white>para caminar, </color></color>" +
-            $"<color=purple>ESPACIO <color=white>para saltar y </color></color>" +
-            $"<color=purple>E <color=white>para interactuar</color></color>");
+            $"<color=purple>ESPACIO <color=white>para saltar </color></color>" +
+            $"<color=purple>E <color=white>para interactuar y </color></color>" +
+            $"<color=purple>Q <color=white>Dispara</color></color>");
         ShowStatus();
     }
 
@@ -83,7 +96,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ShowStatus()
+    public void ShowStatus() // Da la info por consola
     {
         if (health != null)
         {
@@ -127,7 +140,19 @@ public class GameManager : MonoBehaviour
     public void Lose()
     {
         ChangeState(GameState.Defeat);
-        Debug.Log("<color=red>¡MISIÓN FALLIDA! DERROTA.</color>");
+        Debug.Log("<color=red>¡MISIÓN FALLIDA! DERROTA</color>");
+    }
+    //notificaciones
+    public void NotifyPlayerDead()
+    {
+        if (currentState != GameState.Playing) return;
+
+        ChangeState(GameState.Defeat);
+    }
+
+    public void NotifyEnemyDefeat()
+    {
+        if (currentState != GameState.Playing) return;
     }
 
     public void AddScore(int points)

@@ -1,9 +1,11 @@
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
 
 public class HealthSystem : MonoBehaviour
 {
     [Header("Vida")]
+    [SerializeField] private GameObject vfx;
+
     [SerializeField] private float maxHealth = 100f; // Maximo de vida
     private float damage; // Daño
     private float currentHealth; // Vida
@@ -15,7 +17,6 @@ public class HealthSystem : MonoBehaviour
     private float blinkDuration = 0.5f; // Duracion del parpadeo
 
     private Renderer rend;
-    private GameManager manager;
     private bool isFlashing;
 
     void Awake()
@@ -23,7 +24,6 @@ public class HealthSystem : MonoBehaviour
         currentHealth = maxHealth;
         isDead = false;
         rend = GetComponent<Renderer>();
-        manager = FindFirstObjectByType<GameManager>();
     }
 
     public void TakeDamage(float amount)
@@ -33,9 +33,15 @@ public class HealthSystem : MonoBehaviour
         currentHealth -= amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        Debug.Log($"<color=#FF3434>-{damage} de vida</color>");
-        Debug.Log($"<color=#FF3434>Tienes {currentHealth}% de vida</color>");
-
+        if (gameObject.CompareTag("Player"))
+        {
+            Debug.Log($"<color=#FF3434>-{damage} de vida</color>");
+            Debug.Log($"<color=#FF3434>Tienes {currentHealth}% de vida</color>");
+        }
+        if (gameObject.CompareTag("Guard"))
+        {
+            Debug.Log($"<color=#7E00EC>-{damage} de vida al enemigo</color>");
+        }
 
         if (currentHealth <= 0f)
         {
@@ -76,9 +82,31 @@ public class HealthSystem : MonoBehaviour
     public void Dead()
     {
         if (isDead) return;
-        Debug.Log("<color=red>¡Moriste!</color>");
-
-        if (manager != null) manager.Lose(); // Pierde
         isDead = true;
+
+        vfx.SetActive(true);
+        StartCoroutine(DestroyTransition());
+    }
+    IEnumerator DestroyTransition()
+    {
+        rend.enabled = false;
+        yield return new WaitForSeconds(2f);
+
+        if (gameObject.CompareTag("Player"))
+        {
+
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.NotifyPlayerDead();
+            }
+        }
+        else if (gameObject.CompareTag("Guard"))
+        {
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.NotifyEnemyDefeat();
+            }
+            Destroy(this.gameObject);
+        }
     }
 }

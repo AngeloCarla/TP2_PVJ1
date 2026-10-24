@@ -6,7 +6,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private Transform hand; // Desde donde apunta el raycast (La mano)
     [SerializeField] private float rayDistance; // Largo del rayo
     [SerializeField] private LayerMask layer; // Capa que detecta
-    [SerializeField] private Vector3 offset; 
+    [SerializeField] private Vector3 offset;
     private Vector3 origin; // Punto de inicio
     private Vector3 dir; // Direccion a donde mira
     private RaycastHit hit; // Guarda informacion del impacto
@@ -29,12 +29,21 @@ public class PlayerInteraction : MonoBehaviour
 
         // Resalta el objeto al que estamos apuntando
         UpdateHighlight();
+        // Disparo con Q
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Gun gun = GetComponent<Gun>();
+            if (gun != null)
+            {
+                gun.Shoot();
+            }
+        }
 
         if (Input.GetKeyDown(KeyCode.E)) // Al presionar E
         {
             isInteractable = false;
 
-            origin = hand.TransformPoint(offset); 
+            origin = hand.TransformPoint(offset);
             dir = hand.forward;
 
             // Lanza el rayo
@@ -55,6 +64,18 @@ public class PlayerInteraction : MonoBehaviour
 
                     if (stunGun != null) stunGun.TryStun(enemy); // Aturde al enemigo
                     return;
+                }
+
+                WinConsole console = hit.collider.GetComponentInParent<WinConsole>();
+                if (console != null)
+                {
+                    console.WinPlayer();
+                }
+
+                DoorConsole doorConsole = hit.collider.GetComponent<DoorConsole>();
+                if (doorConsole != null)
+                {
+                    doorConsole.DoorActive();
                 }
             }
         }
